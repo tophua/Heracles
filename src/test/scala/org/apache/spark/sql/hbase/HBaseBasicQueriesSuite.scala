@@ -57,6 +57,7 @@ class HBaseBasicQueriesSuite extends TestBaseWithNonSplitData {
   }
 
   testnm = "Select all cols with filter"
+  ///选择带过滤器的所有cols
   test("Select all cols with filter") {
     val query1 =
       s"""SELECT * FROM $TestTableName WHERE shortcol < 12345 LIMIT 2"""
@@ -80,6 +81,7 @@ class HBaseBasicQueriesSuite extends TestBaseWithNonSplitData {
   }
 
   testnm = "Select all cols with order by"
+  //选择所有带有顺序的cols
   test("Select all cols with order by") {
     val query1 =
       s"""SELECT * FROM $TestTableName WHERE shortcol < 12344 ORDER BY strcol DESC LIMIT 2"""
@@ -101,6 +103,7 @@ class HBaseBasicQueriesSuite extends TestBaseWithNonSplitData {
   }
 
   testnm = "Select same column twice"
+  //选择相同的列两次
   test("Select same column twice") {
     val query1 =
       s"""SELECT doublecol AS double1, doublecol AS doublecol
@@ -126,6 +129,7 @@ class HBaseBasicQueriesSuite extends TestBaseWithNonSplitData {
   }
 
   testnm = "Select specific cols with filter"
+  //使用过滤器选择特定的cols
   test("Select specific cols with filter") {
     val query1 =
       s"""SELECT doublecol AS double1, -1 * doublecol AS minusdouble,
@@ -154,6 +158,7 @@ class HBaseBasicQueriesSuite extends TestBaseWithNonSplitData {
   }
 
   testnm = "Mixed And/or predicates"
+  //混合和/或谓词
   test("Mixed And/or predicates") {
     val query1 = s"""SELECT doublecol AS double1, -1 * doublecol AS minusdouble,
      substr(strcol, 2) AS substrcol, doublecol, strcol,
@@ -188,6 +193,7 @@ class HBaseBasicQueriesSuite extends TestBaseWithNonSplitData {
   }
 
   testnm = "In predicates"
+  //在谓词中
   test("In predicates") {
     val query1 = s"""SELECT doublecol AS double1, -1 * doublecol AS minusdouble,
      substr(strcol, 2) AS substrcol, doublecol, strcol,
@@ -214,6 +220,7 @@ class HBaseBasicQueriesSuite extends TestBaseWithNonSplitData {
   }
 
   testnm = "InSet predicates"
+  //在Set谓词中
   test("InSet predicates") {
     val query1 = s"""SELECT doublecol AS double1, -1 * doublecol AS minusdouble,
      substr(strcol, 2) AS substrcol, doublecol, strcol,

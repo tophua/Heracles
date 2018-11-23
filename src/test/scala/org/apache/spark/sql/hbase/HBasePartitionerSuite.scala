@@ -28,7 +28,7 @@ import scala.collection.mutable.ArrayBuffer
 
 class HBasePartitionerSuite extends TestBase {
   val sc: SparkContext = TestHbase.sparkContext
-
+  //测试hbase分区器
   test("test hbase partitioner") {
     val data = (1 to 40).map { r =>
       val rowKey = Bytes.toBytes(r)
@@ -53,7 +53,7 @@ class HBasePartitionerSuite extends TestBase {
       assert(r._1 > 5 * r._2 && r._1 <= 5 * (1 + r._2))
     }
   }
-
+  //空字符串行键编码/解码
   test("empty string row key encode / decode") {
     val rowkey = HBaseKVHelper.encodingRawKeyColumns(
       Seq((BinaryBytesUtils.create(DoubleType).toBytes(123.456), DoubleType),
@@ -73,7 +73,7 @@ class HBasePartitionerSuite extends TestBase {
     assert(BinaryBytesUtils.toUTF8String(rowkey, keys(2)._1, keys(2)._2).toString === "")
     assert(BinaryBytesUtils.toInt(rowkey, keys(3)._1) === 1234)
   }
-
+  //行键编码/解码
   test("row key encode / decode") {
     val rowkey = HBaseKVHelper.encodingRawKeyColumns(
       Seq((BinaryBytesUtils.create(DoubleType).toBytes(123.456), DoubleType),
@@ -91,7 +91,7 @@ class HBasePartitionerSuite extends TestBase {
     assert(BinaryBytesUtils.toUTF8String(rowkey, keys(1)._1, keys(1)._2).toString === "abcdef")
     assert(BinaryBytesUtils.toInt(rowkey, keys(2)._1) === 1234)
   }
-
+  //
   test("test computePredicate in HBasePartition") {
     val namespace = "testNamespace"
     val tableName = "testTable"

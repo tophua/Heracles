@@ -20,6 +20,7 @@ package org.apache.spark.sql.hbase
 class HBaseAggregateQueriesSuite extends
 TestBaseWithNonSplitData {
   var testnm = "Group by with cols in select list and with order by"
+  //在选择列表中按列分组并按顺序排列
   test("Group by with cols in select list and with order by") {
     val query =
       s"""SELECT count(1) as cnt, intcol, floatcol, strcol, max(bytecol) bytecol, max(shortcol) shortcol,
@@ -32,6 +33,7 @@ TestBaseWithNonSplitData {
   }
 
   testnm = "Group by with cols in select list and with having and order by"
+  //在选择列表中使用cols进行分组,并具有和按顺序排列
   test("Group by with cols in select list and with having and order by") {
     val query = s"""SELECT count(1) as cnt, intcol, floatcol, strcol, max(bytecol) bytecolmax,
          max(shortcol) shortcolmax, max(floatcol) floatcolmax, max(doublecol) doublecolmax,
@@ -65,6 +67,7 @@ TestBaseWithNonSplitData {
   }
 
   testnm = "Another Group by with cols in select list and with having and order by"
+  //另一组通过选择列表中的列和具有和按顺序排列
   test("Another Group by with cols in select list and with having and order by") {
     val query1 =
       s"""SELECT count(1) as cnt, intcol, floatcol, strcol, max(bytecol) bytecolmax, max(shortcol) shortcolmax,

@@ -23,6 +23,7 @@ import org.apache.hadoop.hbase._
 
 /**
  * This is a mini tpc test suite running against mini-cluster
+  * 这是一个针对迷你集群运行的迷你tpc测试套件
  */
 class HBaseTpcMiniTestSuite extends TestBase {
   private val namespace = "default"
@@ -41,6 +42,7 @@ class HBaseTpcMiniTestSuite extends TestBase {
   override protected def beforeAll() = {
     /**
      * create hbase table if it does not exists
+      * 如果不存在,请创建hbase表
      */
     super.beforeAll()
     if (!TestHbase.hbaseAdmin.tableExists(TableName.valueOf(hbaseTableName))) {
@@ -58,6 +60,7 @@ class HBaseTpcMiniTestSuite extends TestBase {
 
     /**
      * drop the existing logical table if it exists
+      * 删除现有逻辑表(如果存在)
      */
     if (TestHbase.sharedState.externalCatalog.tableExists(namespace, tableName)) {
       val dropSql = "DROP TABLE " + tableName
@@ -71,6 +74,7 @@ class HBaseTpcMiniTestSuite extends TestBase {
 
     /**
      * create table
+      *创建表
      */
     val createSql =
       s"""CREATE TABLE store_sales (ss_sold_date_sk INTEGER,ss_sold_time_sk INTEGER,ss_item_sk INTEGER,ss_customer_sk INTEGER,ss_cdemo_sk INTEGER,ss_hdemo_sk INTEGER,ss_addr_sk INTEGER,ss_store_sk INTEGER,ss_promo_sk INTEGER,ss_ticket_number INTEGER,ss_quantity INTEGER,ss_wholesale_cost FLOAT,ss_list_price FLOAT,ss_sales_price FLOAT,ss_ext_discount_amt FLOAT,ss_ext_sales_price FLOAT,ss_ext_wholesale_cost FLOAT,ss_ext_list_price FLOAT,ss_ext_tax FLOAT,ss_coupon_amt FLOAT,ss_net_paid FLOAT,ss_net_paid_inc_tax FLOAT,ss_net_profit FLOAT) TBLPROPERTIES(
@@ -88,6 +92,7 @@ class HBaseTpcMiniTestSuite extends TestBase {
 
     /**
      * load the data
+      * 加载数据
      */
     val loadSql = "LOAD DATA LOCAL INPATH '" + s"$csvPath/$csvFile" +
       "' INTO TABLE store_sales"

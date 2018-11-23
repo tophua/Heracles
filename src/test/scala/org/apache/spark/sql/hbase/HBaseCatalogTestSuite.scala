@@ -31,6 +31,7 @@ class HBaseCatalogTestSuite extends TestBase {
 
   test("Create Table") {
     // prepare the test data
+    //准备测试数据
     val namespace = "default"
     val tableName = "testTable"
     val hbaseTableName = "hbaseTable"
@@ -66,6 +67,7 @@ class HBaseCatalogTestSuite extends TestBase {
 
   test("Get Table") {
     // prepare the test data
+    //准备测试数据
     val hbaseNamespace = "default"
     val tableName = "testTable"
     val hbaseTableName = "hbaseTable"
@@ -81,6 +83,7 @@ class HBaseCatalogTestSuite extends TestBase {
     assert(result.allColumns.size === 4)
 
     // check the data type
+    //检查数据类型
     assert(result.keyColumns.head.dataType === StringType)
     assert(result.keyColumns(1).dataType === IntegerType)
     assert(result.nonKeyColumns(1).dataType === FloatType)
@@ -91,7 +94,7 @@ class HBaseCatalogTestSuite extends TestBase {
     assert(result.keyColumns.equals(keyColumns))
     catalog.stopAdmin()
   }
-
+  //改变表
   test("Alter Table") {
     val namespace = "default"
     val tableName = "testTable"
@@ -111,9 +114,10 @@ class HBaseCatalogTestSuite extends TestBase {
     assert(table.allColumns.size === 4)
     catalog.stopAdmin()
   }
-
+  //删除表
   test("Delete Table") {
     // prepare the test data
+    //准备测试数据
     val namespace = "default"
     val tableName = "testTable"
 
@@ -121,7 +125,7 @@ class HBaseCatalogTestSuite extends TestBase {
     assert(catalog.tableExists(namespace, tableName) === false)
     catalog.stopAdmin()
   }
-
+  //检查逻辑表是否存在
   test("Check Logical Table Exist") {
     val namespace = "default"
     val tableName = "non-exist"
@@ -129,7 +133,7 @@ class HBaseCatalogTestSuite extends TestBase {
     assert(catalog.tableExists(namespace, tableName) === false)
     catalog.stopAdmin()
   }
-
+  //命名空间操作
   test("Namespce operations") {
     runSql("CREATE DATABASE db1")
     runSql(s"""CREATE TABLE db1.t1 (c1 INT, c2 INT) TBLPROPERTIES('hbaseTableName'='ht',

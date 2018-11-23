@@ -32,6 +32,7 @@ class HBaseBulkLoadIntoTableSuite extends TestBase {
   }
   
   // Test if we can parse 'LOAD DATA LOCAL INPATH './usr/file.txt' INTO TABLE tb1'
+  //测试我们是否可以解析'LOAD DATA LOCAL INPATH'./ usr / file.txt'INTO TABLE tb1'
   test("bulk load parser test, local file") {
 
     val parser = new SparkSqlParser(TestHbase.sessionState.conf)
@@ -49,6 +50,7 @@ class HBaseBulkLoadIntoTableSuite extends TestBase {
   }
 
   // Test if we can parse 'LOAD DATA INPATH '/usr/hdfsfile.txt' INTO TABLE tb1'
+  //bulkload parser test,加载hdfs文件
   test("bulkload parser test, load hdfs file") {
 
     val parser = new SparkSqlParser(TestHbase.sessionState.conf)
@@ -63,7 +65,7 @@ class HBaseBulkLoadIntoTableSuite extends TestBase {
     assert(!l.isLocal)
     assert(l.table.table.equals("tb1"))
   }
-
+  //bulkload解析器测试,使用分隔符
   test("bulkload parser test, using delimiter") {
 
     val parser = new SparkSqlParser(TestHbase.sessionState.conf)
@@ -78,7 +80,7 @@ class HBaseBulkLoadIntoTableSuite extends TestBase {
     assert(!l.isLocal)
     assert(l.table.table.equals("tb1"))
   }
-
+  //将数据加载到hbase中
   test("load data into hbase") {
     val drop = "DROP TABLE IF EXISTS testblk"
     val executeSql0 = TestHbase.sql(drop)
@@ -89,6 +91,7 @@ class HBaseBulkLoadIntoTableSuite extends TestBase {
     }
 
     // create sql table map with hbase table and run simple sql
+    //用hbase表创建sql表映射并运行简单的sql
     val sql1 =
       s"""CREATE TABLE testblk (col1 STRING, col2 STRING, col3 STRING) TBLPROPERTIES(
           'hbaseTableName'='testblkHTable',
@@ -109,6 +112,7 @@ class HBaseBulkLoadIntoTableSuite extends TestBase {
     val inputFile = "'" + hbaseHome + "/loadData.txt'"
 
     // then load data into table
+    //将数据加载到表中
     val loadSql = "LOAD DATA LOCAL INPATH " + inputFile + " INTO TABLE testblk"
 
     val executeSql3 = TestHbase.sql(loadSql)
@@ -136,6 +140,7 @@ class HBaseBulkLoadIntoTableSuite extends TestBase {
     }
 
     // create sql table map with hbase table and run simple sql
+    //用hbase表创建sql表映射并运行简单的sql
     val sql1 =
       s"""CREATE TABLE testblk (col1 STRING, col2 STRING, col3 STRING) TBLPROPERTIES(
           'hbaseTableName'='testblkHTable',
@@ -156,6 +161,7 @@ class HBaseBulkLoadIntoTableSuite extends TestBase {
     val inputFile = "'" + hbaseHome + "/loadData.txt'"
 
     // then load parall data into table
+    //将parall数据加载到表中
     val loadSql = "LOAD DATA LOCAL INPATH " + inputFile + " INTO TABLE testblk"
 
     val executeSql3 = TestHbase.sql(loadSql)
@@ -169,7 +175,7 @@ class HBaseBulkLoadIntoTableSuite extends TestBase {
     // cleanup
     runSql(drop)
   }
-
+  //将具有空列值的数据加载到hbase中
   test("load data with null column values into hbase") {
 
     val drop = "DROP TABLE IF EXISTS testNullColumnBulkload"
@@ -181,6 +187,7 @@ class HBaseBulkLoadIntoTableSuite extends TestBase {
     }
 
     // create sql table map with hbase table and run simple sql
+    //用hbase表创建sql表映射并运行简单的sql
     val sql1 =
     s"""CREATE TABLE testNullColumnBulkload (col1 STRING, col2 STRING, col3 STRING, col4 STRING) TBLPROPERTIES(
           'hbaseTableName'='testNullColumnBulkloadHTable',
@@ -201,6 +208,7 @@ class HBaseBulkLoadIntoTableSuite extends TestBase {
     val inputFile = "'" + hbaseHome + "/loadNullableData.txt'"
 
     // then load data into table
+    //然后将数据加载到表中
     val loadSql = "LOAD DATA LOCAL INPATH " + inputFile + " INTO TABLE testNullColumnBulkload"
 
     val executeSql3 = TestHbase.sql(loadSql)
@@ -221,7 +229,7 @@ class HBaseBulkLoadIntoTableSuite extends TestBase {
     // cleanup
     runSql(drop)
   }
-
+  //将具有空列值的parall数据加载到hbase中
   test("load parall data with null column values into hbase") {
 
     val drop = "DROP TABLE IF EXISTS testNullColumnBulkload"
@@ -235,6 +243,7 @@ class HBaseBulkLoadIntoTableSuite extends TestBase {
     }
 
     // create sql table map with hbase table and run simple sql
+    //用hbase表创建sql表映射并运行简单的sql
     val sql1 =
       s"""CREATE TABLE testNullColumnBulkload (col1 STRING, col2 STRING, col3 STRING, col4 STRING) TBLPROPERTIES(
           'hbaseTableName'='testNullColumnBulkloadHTable',
@@ -255,6 +264,7 @@ class HBaseBulkLoadIntoTableSuite extends TestBase {
     val inputFile = "'" + hbaseHome + "/loadNullableData.txt'"
 
     // then load parall data into table
+    //然后将parall数据加载到表中
     val loadSql = "LOAD DATA LOCAL INPATH " + inputFile + " INTO TABLE testNullColumnBulkload"
 
     val executeSql3 = TestHbase.sql(loadSql)
@@ -275,10 +285,11 @@ class HBaseBulkLoadIntoTableSuite extends TestBase {
     // cleanup
     runSql(drop)
   }
-
+  //在具有多个列族的hbase表上加载数据
   test("load data on hbase table with more than 1 column family") {
     createNativeHbaseTable("multi_cf_table", Seq("cf1", "cf2"))
     // create sql table map with hbase table and run simple sql
+    //用hbase表创建sql表映射并运行简单的sql
     val sql1 =
       s"""CREATE TABLE testblk (col1 STRING, col2 STRING, col3 STRING) TBLPROPERTIES(
           'hbaseTableName'='multi_cf_table',
@@ -299,6 +310,7 @@ class HBaseBulkLoadIntoTableSuite extends TestBase {
     val inputFile = "'" + hbaseHome + "/loadData.txt'"
 
     // then load parall data into table
+    //然后将parall数据加载到表中
     val loadSql = "LOAD DATA LOCAL INPATH " + inputFile + " INTO TABLE testblk"
 
     val executeSql3 = TestHbase.sql(loadSql)
@@ -314,10 +326,11 @@ class HBaseBulkLoadIntoTableSuite extends TestBase {
     dropNativeHbaseTable("multi_cf_table")
 
   }
-
+  //在hbase表上加载具有多个列族的parall数据
   test("load parall data on hbase table with more than 1 column family") {
     createNativeHbaseTable("multi_cf_table", Seq("cf1", "cf2"))
     // create sql table map with hbase table and run simple sql
+    //用hbase表创建sql表映射并运行简单的sql
     val sql1 =
       s"""CREATE TABLE testblk (col1 STRING, col2 STRING, col3 STRING) TBLPROPERTIES(
           'hbaseTableName'='multi_cf_table',
@@ -338,6 +351,7 @@ class HBaseBulkLoadIntoTableSuite extends TestBase {
     val inputFile = "'" + hbaseHome + "/loadData.txt'"
 
     // then load parall data into table
+    //然后将parall数据加载到表中
     val loadSql = "LOAD DATA LOCAL INPATH " + inputFile + " INTO TABLE testblk"
 
     val executeSql3 = TestHbase.sql(loadSql)
@@ -352,7 +366,7 @@ class HBaseBulkLoadIntoTableSuite extends TestBase {
     runSql("drop table testblk")
     dropNativeHbaseTable("multi_cf_table")
   }
-
+  //预压表的大容量负载
   test("bulk load for presplit table") {
     val splitKeys = Seq(4, 8, 12).map { x =>
       BinaryBytesUtils.create(IntegerType).toBytes(x)
@@ -391,7 +405,7 @@ class HBaseBulkLoadIntoTableSuite extends TestBase {
     runSql("drop table testblk")
     dropNativeHbaseTable("presplit_table")
   }
-
+  //预分割表的并行批量加载
   test("parall bulk load for presplit table") {
     val splitKeys = Seq(4, 8, 12).map { x =>
       BinaryBytesUtils.create(IntegerType).toBytes(x)
@@ -419,6 +433,7 @@ class HBaseBulkLoadIntoTableSuite extends TestBase {
     val inputFile = "'" + hbaseHome + "/splitLoadData.txt'"
 
     // then load parall data into table
+    //然后将parall数据加载到表中
     val loadSql = "LOAD DATA LOCAL INPATH " + inputFile + " INTO TABLE testblk"
 
     val executeSql3 = TestHbase.sql(loadSql)
@@ -430,7 +445,7 @@ class HBaseBulkLoadIntoTableSuite extends TestBase {
     runSql("drop table testblk")
     dropNativeHbaseTable("presplit_table")
   }
-
+  //具有超过128个区域的并行批量加载预拆分表
   test("parall bulk load presplit table with more than 128 regions") {
     // HBasePartitioner binarySearch throws NPE if # regions > 128
     // commit dae6546373a14d4ceb22680954c3482ed33e346a
@@ -469,6 +484,7 @@ class HBaseBulkLoadIntoTableSuite extends TestBase {
     val inputFile = "'" + hbaseHome + "/131_regions.txt'"
 
     // then load parall data into table
+    //然后将parall数据加载到表中
     val loadSql = "LOAD DATA LOCAL INPATH " + inputFile + " INTO TABLE region_cnt_131"
 
     val executeSql3 = TestHbase.sql(loadSql)

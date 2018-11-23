@@ -18,7 +18,7 @@
 package org.apache.spark.sql.hbase
 
 import org.apache.spark.sql.Row
-
+//具有非拆分数据的测试基础
 class HBaseInsertTableSuite extends TestBaseWithNonSplitData {
 
   var testnm = "Insert all rows to the table from other table"
@@ -79,6 +79,7 @@ class HBaseInsertTableSuite extends TestBaseWithNonSplitData {
   }
 
   testnm = "Insert few columns to the table from other table"
+  //从另一个表中向表中插入几列
   test("Insert few columns to the table from other table") {
     val createQuery = s"""CREATE TABLE insertTestTableFewCols (strcol STRING, bytecol BYTE, shortcol SHORT, intcol INTEGER) TBLPROPERTIES(
                       'hbaseTableName'='insertTestTableFewCols',
@@ -106,6 +107,7 @@ class HBaseInsertTableSuite extends TestBaseWithNonSplitData {
   }
 
   testnm = "Insert into values test"
+  //插入值测试
   test("Insert into values test") {
     val createQuery = s"""CREATE TABLE insertValuesTest (strcol STRING, bytecol BYTE, shortcol SHORT, intcol INTEGER) TBLPROPERTIES(
                       'hbaseTableName'='hinsertValuesTest',
@@ -139,6 +141,7 @@ class HBaseInsertTableSuite extends TestBaseWithNonSplitData {
   }
 
   testnm = "Insert nullable values test"
+  //插入可空值测试
   test("Insert nullable values test") {
     val createQuery = s"""CREATE TABLE insertNullValuesTest (strcol STRING, bytecol BYTE, shortcol SHORT, intcol INTEGER) TBLPROPERTIES(
                       'hbaseTableName'='hinsertNullValuesTest',
@@ -162,6 +165,7 @@ class HBaseInsertTableSuite extends TestBaseWithNonSplitData {
     var currentResultRow: Int = 0
 
     // check 1st result row
+    //检查第一行结果
     assert(selectAllResult(currentResultRow).length == 4, s"$testnm failed on row size (# of cols)")
     assert(selectAllResult(currentResultRow)(0) === s"Row0", s"$testnm failed on returned Row0, key value")
     assert(selectAllResult(currentResultRow)(1) == null, s"$testnm failed on returned Row0, null col1 value")
@@ -171,27 +175,32 @@ class HBaseInsertTableSuite extends TestBaseWithNonSplitData {
     currentResultRow += 1
 
     // check 2nd result row
+    //检查第二行结果
     assert(selectAllResult(currentResultRow)(0) === s"Row1", s"$testnm failed on returned Row1, key value")
     // skip comparison of actual and expected bytecol value
+    //跳过实际和预期bytecol值的比较
     assert(selectAllResult(currentResultRow)(2) == null, s"$testnm failed on returned Row1, null col2 value")
     assert(selectAllResult(currentResultRow)(3) == 23456789, s"$testnm failed on returned Row1, col3 value")
 
     currentResultRow += 1
 
     // check 3rd result row
+    //检查第3行结果
     assert(selectAllResult(currentResultRow)(0) === s"Row2", s"$testnm failed on returned Row2, key value")
     // skip comparison of actual and expected bytecol value
+    //跳过实际和预期bytecol值的比较
     assert(selectAllResult(currentResultRow)(2) == 12342, s"$testnm failed on returned Row2, col2 value")
     assert(selectAllResult(currentResultRow)(3) == null, s"$testnm failed on returned Row2, null col3 value")
 
     // test 'where col is not null'
-
+    //测试'col不为空'
     val selectWhereIsNotNullQuery = "SELECT * FROM insertNullValuesTest WHERE intcol IS NOT NULL ORDER BY strcol"
     val selectWhereIsNotNullResult = runSql(selectWhereIsNotNullQuery)
     assert(selectWhereIsNotNullResult.length == 2, s"$testnm failed on size")
 
     currentResultRow = 0
     // check 1st result row
+    //检查第一行结果
     assert(selectWhereIsNotNullResult(currentResultRow)(0) === s"Row0", s"$testnm failed on returned Row0, key value")
     assert(selectWhereIsNotNullResult(currentResultRow)(1) == null, s"$testnm failed on returned Row0, null col1 value")
     assert(selectWhereIsNotNullResult(currentResultRow)(2) == 12340, s"$testnm failed on returned Row0, col2 value")
@@ -199,8 +208,10 @@ class HBaseInsertTableSuite extends TestBaseWithNonSplitData {
 
     currentResultRow += 1
     // check 2nd result row
+    //检查第二行结果
     assert(selectWhereIsNotNullResult(currentResultRow)(0) === s"Row1", s"$testnm failed on returned Row1, key value")
     // skip comparison of actual and expected bytecol value
+    //跳过实际和预期bytecol值的比较
     assert(selectWhereIsNotNullResult(currentResultRow)(2) == null, s"$testnm failed on returned Row1, null col2 value")
     assert(selectWhereIsNotNullResult(currentResultRow)(3) == 23456789, s"$testnm failed on returned Row1, col3 value")
 

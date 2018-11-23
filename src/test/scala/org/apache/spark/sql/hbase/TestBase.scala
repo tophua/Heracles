@@ -45,6 +45,7 @@ abstract class TestBase
 
   /**
    * Runs the plan and makes sure the answer matches the expected result.
+    * 运行计划并确保答案与预期结果匹配
    * @param rdd the [[DataFrame]] to be executed
    * @param expectedAnswer the expected result, can either be an Any, Seq[Product], or Seq[ Seq[Any] ].
    */
@@ -52,8 +53,10 @@ abstract class TestBase
     val isSorted = rdd.logicalPlan.collect { case s: logical.Sort => s}.nonEmpty
     def prepareAnswer(answer: Seq[Row]): Seq[Row] = {
       // Converts data to types that we can do equality comparison using Scala collections.
+      //将数据转换为可以使用Scala集合进行相等性比较的类型。
       // For BigDecimal type, the Scala type has a better definition of equality test (similar to
       // Java's java.math.BigDecimal.compareTo).
+      //对于BigDecimal类型,Scala类型具有更好的相等性测试定义
       val converted: Seq[Row] = answer.map { s =>
         Row.fromSeq(s.toSeq.map {
           case d: java.math.BigDecimal => BigDecimal(d)
@@ -173,6 +176,8 @@ abstract class TestBase
 
   def loadData(tableName: String, loadFile: String) = {
     // then load data into table
+    //then load data into table
+    //将数据加载到表中
     val loadSql = s"LOAD DATA LOCAL INPATH '$loadFile' INTO TABLE $tableName"
     runSql(loadSql)
   }

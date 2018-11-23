@@ -71,6 +71,7 @@ class HBaseAdditionalQuerySuite extends TestBase {
     val inputFile = "'" + hbaseHome + "/splitLoadData1.txt'"
 
     // then load parall data into table
+    //然后将parall数据加载到表中
     val loadSql = "LOAD DATA LOCAL INPATH " + inputFile + " INTO TABLE testblk"
     runSql(loadSql)
   }

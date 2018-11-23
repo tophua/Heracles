@@ -40,7 +40,9 @@ object TestHbase extends HBaseSparkSession(
     + s"${sparkContext.hadoopConfiguration.get("hbase.zookeeper.property.clientPort")}")
 
   // The following operation will initialize the HBaseCatalog.
-  // And it should be done after starting MiniHBaseCluster
+  //以下操作将初始化HBaseCatalog
+  //And it should be done after starting MiniHBaseCluster
+  //它应该在启动MiniHBaseCluster后完成
   sharedState.externalCatalog.asInstanceOf[HBaseCatalog].deploySuccessfully_internal = Some(true)
   sharedState.externalCatalog.asInstanceOf[HBaseCatalog].pwdIsAccessible = true
 

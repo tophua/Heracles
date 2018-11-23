@@ -22,6 +22,7 @@ import org.apache.spark.sql.Row
 
 /**
  * HBase minicluster query test again stringformat tbl.
+  * HBase minicluster查询再次测试stringformat tbl
  */
 class HBaseTpcStringFormatMiniTestSuite extends TestBase {
   private val namespace = "default"
@@ -43,6 +44,7 @@ class HBaseTpcStringFormatMiniTestSuite extends TestBase {
 
     /**
      * create hbase table if it does not exists
+      * 如果不存在,请创建hbase表
      */
     if (!hbaseAdmin.tableExists(TableName.valueOf(hbaseTableName))) {
       val descriptor = new HTableDescriptor(TableName.valueOf(hbaseTableName))
@@ -57,6 +59,7 @@ class HBaseTpcStringFormatMiniTestSuite extends TestBase {
 
     /**
      * drop the existing logical table if it exists
+      * 删除现有逻辑表(如果存在)
      */
     if (TestHbase.sharedState.externalCatalog.tableExists(namespace, tableName)) {
       val dropSql = "DROP TABLE " + tableName
@@ -70,6 +73,7 @@ class HBaseTpcStringFormatMiniTestSuite extends TestBase {
 
     /**
      * create table
+      * 创建表
      */
     val createSql =
       s"""CREATE TABLE store_sales_stringformat (strkey STRING,ss_sold_date_sk INTEGER,ss_sold_time_sk INTEGER,ss_item_sk INTEGER,ss_customer_sk INTEGER,ss_cdemo_sk INTEGER,ss_hdemo_sk INTEGER,ss_addr_sk INTEGER,ss_store_sk INTEGER,ss_promo_sk INTEGER,ss_ticket_number INTEGER,ss_quantity INTEGER,ss_wholesale_cost FLOAT,ss_list_price FLOAT,ss_sales_price FLOAT,ss_ext_discount_amt FLOAT,ss_ext_sales_price FLOAT,ss_ext_wholesale_cost FLOAT,ss_ext_list_price FLOAT,ss_ext_tax FLOAT,ss_coupon_amt FLOAT,ss_net_paid FLOAT,ss_net_paid_inc_tax FLOAT,ss_net_profit FLOAT) TBLPROPERTIES(
@@ -88,6 +92,7 @@ class HBaseTpcStringFormatMiniTestSuite extends TestBase {
 
     /**
      * load the data
+      * 加载数据
      */
     val loadSql = "LOAD DATA LOCAL INPATH '" + s"$csvPath/$csvFile" +
       "' INTO TABLE " + tableName

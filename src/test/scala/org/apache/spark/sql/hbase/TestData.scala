@@ -192,6 +192,7 @@ object TestData {
   case class IntField(i: Int)
 
   // An RDD with 4 elements and 8 partitions
+  //具有4个元素和8个分区的RDD
   val withEmptyParts = TestHbase.sparkContext.parallelize((1 to 4).map(IntField), 8).toDF()
   withEmptyParts.createOrReplaceTempView("withEmptyParts")
 

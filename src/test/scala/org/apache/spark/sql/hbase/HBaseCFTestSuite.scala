@@ -21,6 +21,7 @@ import org.apache.hadoop.hbase._
 
 /**
  * This is a custom filter test suite running against mini-cluster
+  * 这是针对迷你群集运行的自定义筛选器测试套件
  */
 class HBaseCFTestSuite extends TestBase {
   private val namespace = "default"
@@ -39,6 +40,7 @@ class HBaseCFTestSuite extends TestBase {
   override protected def beforeAll() = {
     /**
      * create hbase table if it does not exists
+      * 如果不存在,请创建hbase表
      */
     super.beforeAll()
     if (!TestHbase.sharedState.externalCatalog.asInstanceOf[HBaseCatalog].tableExists(namespace, hbaseTableName)) {
@@ -56,6 +58,7 @@ class HBaseCFTestSuite extends TestBase {
 
     /**
      * drop the existing logical table if it exists
+      * 删除现有逻辑表(如果存在)
      */
     if (TestHbase.sharedState.externalCatalog.asInstanceOf[HBaseCatalog].tableExists(namespace, tableName)) {
       val dropSql = "DROP TABLE " + tableName
@@ -68,7 +71,7 @@ class HBaseCFTestSuite extends TestBase {
     }
 
     /**
-     * create table
+     * create table,创建表
      */
     val createSql =
       s"""CREATE TABLE cf (k1 INTEGER, k2 INTEGER, k3 INTEGER, nk1 INTEGER, nk2 INTEGER) TBLPROPERTIES(
@@ -85,7 +88,7 @@ class HBaseCFTestSuite extends TestBase {
     }
 
     /**
-     * load the data
+     * load the data,加载数据
      */
     val loadSql = "LOAD DATA LOCAL INPATH '" + s"$csvPath/$csvFile" +
       s"' INTO TABLE $tableName"

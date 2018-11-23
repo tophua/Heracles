@@ -31,6 +31,7 @@ import org.apache.spark.sql.types._
 /**
  * HBaseMainTest
  * create HbTestTable and metadata table, and insert some data
+  * 创建HbTestTable和元数据表,并插入一些数据
  */
 class TestBaseWithSplitData extends TestBase {
   val namespace = "default"
@@ -42,6 +43,7 @@ class TestBaseWithSplitData extends TestBase {
 
   override protected def beforeAll() = {
     super.beforeAll()
+    //
     setupData(useMultiplePartitions = true, needInsertData = true)
     TestData
   }
@@ -52,9 +54,10 @@ class TestBaseWithSplitData extends TestBase {
     dropNativeHbaseTable("ht")
     super.afterAll()
   }
-
+  //使用多个分区
   def createTable(useMultiplePartitions: Boolean) = {
     // delete the existing hbase table
+    //删除现有的hbase表
     if (TestHbase.hbaseAdmin.tableExists(HbaseTableName)) {
       TestHbase.hbaseAdmin.disableTable(HbaseTableName)
       TestHbase.hbaseAdmin.deleteTable(HbaseTableName)

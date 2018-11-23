@@ -29,6 +29,7 @@ import org.apache.spark.unsafe.types.UTF8String
 import org.scalatest.{BeforeAndAfterAll, FunSuite}
 
 class BytesUtilsSuite extends FunSuite with BeforeAndAfterAll with Logging {
+  //字节排序测试
   test("Bytes Ordering Test") {
     val s = Seq(-257, -256, -255, -129, -128, -127, -64, -16, -4, -1,
       0, 1, 4, 16, 64, 127, 128, 129, 255, 256, 257)
@@ -51,8 +52,9 @@ class BytesUtilsSuite extends FunSuite with BeforeAndAfterAll with Logging {
     }
     result
   }
-
+  //字节工具测试
   test("Bytes Utility Test") {
+
     assert(BinaryBytesUtils.toBoolean(BinaryBytesUtils.create(BooleanType)
       .toBytes(input = true), 0) === true)
     assert(BinaryBytesUtils.toBoolean(BinaryBytesUtils.create(BooleanType)

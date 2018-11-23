@@ -24,7 +24,7 @@ import org.apache.spark.sql.{DataFrame, Row}
 class HBaseAdvancedSQLQuerySuite extends TestBaseWithSplitData {
   import org.apache.spark.sql.hbase.TestHbase._
   import org.apache.spark.sql.hbase.TestHbase.implicits._
-
+  //与codegen聚合
   test("aggregation with codegen") {
     val originalValue = TestHbase.sessionState.conf.wholeStageEnabled
     TestHbase.sessionState.conf.setConfString(SQLConf.WHOLESTAGE_CODEGEN_ENABLED.key, "true")
@@ -42,7 +42,7 @@ class HBaseAdvancedSQLQuerySuite extends TestBaseWithSplitData {
       tableA.where('col2 === 6).orderBy('col2.asc).select('col7),
       Row(-31) :: Nil)
   }
-
+  //元数据正确传播
   test("metadata is propagated correctly") {
     val tableA = sql("SELECT col7, col1, col3 FROM ta")
     val schema = tableA.schema

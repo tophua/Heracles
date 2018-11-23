@@ -26,6 +26,7 @@ import org.apache.spark.sql.types._
 
 class HBaseSQLQuerySuite extends TestBaseWithSplitData {
   // Make sure the tables are loaded.
+  //确保已加载表
   import org.apache.spark.sql.hbase.TestHbase._
   import org.apache.spark.sql.hbase.TestHbase.implicits._
 
@@ -534,16 +535,19 @@ class HBaseSQLQuerySuite extends TestBaseWithSplitData {
 
   test("UNION with column mismatches") {
     // Column name mismatches are allowed.
+    //列名称不匹配是允许的
     checkAnswer(
       sql("SELECT n,l FROM lowerCaseData UNION SELECT N as x1, L as x2 FROM upperCaseData"),
       Row(1, "A") :: Row(1, "a") :: Row(2, "B") :: Row(2, "b") :: Row(3, "C") :: Row(3, "c") ::
         Row(4, "D") :: Row(4, "d") :: Row(5, "E") :: Row(6, "F") :: Nil)
     // Column type mismatches are not allowed, forcing a type coercion.
+    //不允许列类型不匹配,强制类型强制
     checkAnswer(
       sql("SELECT n FROM lowerCaseData UNION SELECT L FROM upperCaseData"),
       ("1" :: "2" :: "3" :: "4" :: "A" :: "B" :: "C" :: "D" :: "E" :: "F" :: Nil).map(Row(_)))
     // Column type mismatches where a coercion is not possible, in this case between integer
     // and array types, trigger a TreeNodeException.
+    //在不可能强制的情况下,列类型不匹配(在这种情况下,在整数和数组类型之间)会触发TreeNodeException。
     intercept[AnalysisException] {
       sql("SELECT dt FROM arrayData UNION SELECT 1 FROM arrayData").collect()
     }
@@ -580,6 +584,7 @@ class HBaseSQLQuerySuite extends TestBaseWithSplitData {
     val nonexistentKey = "nonexistent"
 
     // "set" itself returns all config variables currently specified in SQLConf.
+    //“set”本身返回当前在SQLConf中指定的所有配置变量
     assert(sql("SET").collect().length == 0)
 
     // "set key=val"
@@ -713,7 +718,7 @@ class HBaseSQLQuerySuite extends TestBaseWithSplitData {
       sql("SELECT CAST(TRUE AS STRING), CAST(FALSE AS STRING) FROM testData LIMIT 1"),
       Row("true", "false"))
   }
-
+//元数据正确传播
   test("metadata is propagated correctly") {
     val person: DataFrame = sql("SELECT * FROM person")
     val schema = person.schema

@@ -22,6 +22,7 @@ import org.apache.spark.sql.catalyst.util.DateTimeUtils
 
 /**
  * Test insert / query against the table
+  * 测试对表的插入/查询
  */
 class HBaseBasicOperationSuite extends TestBaseWithSplitData {
   import org.apache.spark.sql.hbase.TestHbase._
@@ -37,7 +38,7 @@ class HBaseBasicOperationSuite extends TestBaseWithSplitData {
     }
     super.afterAll()
   }
-
+  //日期类型测试
   test("DateType test") {
     sql( """CREATE TABLE date_table (c1 DATE, c2 DATE) TBLPROPERTIES(
         'hbaseTableName'='date_table',
@@ -58,7 +59,7 @@ class HBaseBasicOperationSuite extends TestBaseWithSplitData {
     assert(result2(1).get(1).toString == "2010-01-01")
     sql("drop table date_table")
   }
-
+  //时间戳类型测试
   test("TimestampType test") {
     sql( """CREATE TABLE ts_table (c1 TIMESTAMP, c2 TIMESTAMP) TBLPROPERTIES(
         'hbaseTableName'='ts_table',
@@ -79,7 +80,7 @@ class HBaseBasicOperationSuite extends TestBaseWithSplitData {
     assert(result2(1).get(1).toString == "2009-08-07 13:14:15.0")
     sql("drop table ts_table")
   }
-
+  //以字符串格式插入表
   test("Insert Into table in StringFormat") {
     sql( """CREATE TABLE tb0 (column2 INTEGER, column1 INTEGER, column4 FLOAT, column3 SHORT) TBLPROPERTIES(
         'hbaseTableName'='default.ht0',
@@ -96,7 +97,7 @@ class HBaseBasicOperationSuite extends TestBaseWithSplitData {
     sql( """DROP TABLE tb0""")
     dropNativeHbaseTable("default.ht0")
   }
-
+  //插入和查询单行
   test("Insert and Query Single Row") {
     sql( """CREATE TABLE tb1 (column1 INTEGER, column2 STRING) TBLPROPERTIES(
         'hbaseTableName'='ht1',
@@ -117,7 +118,7 @@ class HBaseBasicOperationSuite extends TestBaseWithSplitData {
     sql( """DROP TABLE tb1""")
     dropNativeHbaseTable("ht1")
   }
-
+  //以字符串格式插入和查询单行
   test("Insert and Query Single Row in StringFormat") {
     sql( """CREATE TABLE tb1 (col1 STRING,col2 BOOLEAN,col3 SHORT,col4 INTEGER,col5 LONG,col6 FLOAT,col7 DOUBLE) TBLPROPERTIES(
         'hbaseTableName'='ht2',
@@ -162,7 +163,7 @@ class HBaseBasicOperationSuite extends TestBaseWithSplitData {
     assert(sql( """SELECT count(*) FROM ta where col2 IN (1, 2, 3)""").collect()(0).get(0) == 3)
     assert(sql( """SELECT count(*) FROM ta where col4 IN (1, 2, 3)""").collect()(0).get(0) == 1)
   }
-
+  //点聚合查询
   test("Point Aggregate Query") {
     sql( """CREATE TABLE tb2 (column2 INTEGER,column1 INTEGER,column4 FLOAT,column3 SHORT) TBLPROPERTIES(
         'hbaseTableName'='default.ht0',
@@ -217,6 +218,8 @@ class HBaseBasicOperationSuite extends TestBaseWithSplitData {
   }
 
   // alter table is not supported for now
+  //目前不支持alter table
+  //更改添加列和Alter Drop列
   ignore("Alter Add column and Alter Drop column") {
     assert(sql( """SELECT * FROM ta""").collect()(0).length == 7)
     sql( """ALTER TABLE ta ADD col8 STRING MAPPED BY (col8 = cf1.cf13)""")

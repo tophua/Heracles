@@ -21,7 +21,8 @@ import org.apache.hadoop.hbase._
 
 /**
  * CreateTableAndLoadData
- *
+ * 具有非拆分数据的测试基础,
+  * 创建表并加载数据,
  */
 class TestBaseWithNonSplitData extends TestBase {
   private val namespace = "default"
